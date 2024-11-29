@@ -16,6 +16,14 @@ junit = "4.13.2"
 kotlin = "2.0.21"
 kotlinx-coroutines = "1.9.0"
 
+# Ktor
+ktor = "3.0.0"
+
+# local preference
+datastore = "1.1.1"
+
+voyagerVersion = "1.1.0-beta02"
+
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
@@ -31,9 +39,40 @@ androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", nam
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 
+#Ktor
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" } # for core functionalities
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" } #for JVM based platforms(Android, Desktop)
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" } #for native platforms (iOS, macOS)
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" } # Parse Kotlin Data classes to and from JSON
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" } # used with the above (content-negotiation)
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" } # to log the requests and debug
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" } # It is used if we have an authenticated backend
+
+#local preference
+datastore = { module = "androidx.datastore:datastore", version.ref = "datastore"}
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore"}
+
+#Voyager
+navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyagerVersion"}
+screen-modal = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyagerVersion"}
+voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyagerVersion"}
+navigator-tabs = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyagerVersion"}
+navigator-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyagerVersion"}
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+# Kotlin serialization
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+[bundles]
+ktor = [
+    "ktor-client-core",
+    "ktor-client-content-negotiation",
+    "ktor-client-auth",
+    "ktor-client-logging",
+    "ktor-serialization-kotlinx-json",
+]
