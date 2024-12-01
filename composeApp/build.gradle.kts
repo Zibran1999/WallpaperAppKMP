@@ -62,6 +62,10 @@ kotlin {
 
             // Ktor
             implementation(libs.ktor.client.okhttp)
+
+            // Koin (Dependency Injection)
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -85,6 +89,13 @@ kotlin {
             implementation(libs.navigator)
             implementation(libs.navigator.tabs)
             implementation(libs.navigator.transitions)
+
+            // Koin (Dependency Injection)
+            api(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.lifecycle.viewmodel)
+            implementation(libs.navigation.compose)
         }
         nativeMain.dependencies {
             // Ktor

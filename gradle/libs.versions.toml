@@ -19,10 +19,24 @@ kotlinx-coroutines = "1.9.0"
 # Ktor
 ktor = "3.0.0"
 
+# Coil 3 needs Ktor wasm to support image loading on the wasm platform.
+#ktor = "3.0.0-wasm2"
+#ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+
 # local preference
 datastore = "1.1.1"
 
+# voyager for navigation
 voyagerVersion = "1.1.0-beta02"
+
+# Koin for (Dependency Injection)
+koin = "4.0.0"
+koinComposeMultiplatform = "4.0.0"
+navigationCompose = "2.8.0-alpha10"
+lifecycleViewModel = "2.8.7"
+
+# Coil to load images
+coil3 = "3.0.0-rc02"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -58,6 +72,35 @@ screen-modal = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref
 voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyagerVersion"}
 navigator-tabs = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyagerVersion"}
 navigator-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyagerVersion"}
+
+# Koin (Dependency Injection)
+# ViewModel support for lifecycle-aware components in Android (used with Koin for DI)
+lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycleViewModel" }
+
+# Koin for Android dependency injection (used to manage dependencies in the Android app)
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+
+# Koin AndroidX Compose integration (for using Koin with Jetpack Compose in Android)
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+
+# Koin core for basic dependency injection functionality (core of Koin DI library)
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+
+# Koin Compose integration for Multiplatform (used to inject dependencies in KMP apps using Jetpack Compose)
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinComposeMultiplatform" }
+
+# Koin ViewModel support for Compose (provides ViewModel support in Compose with Koin DI)
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koinComposeMultiplatform" }
+
+# Navigation Compose (used to handle navigation within Jetpack Compose apps)
+navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+
+# Coil to load images
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
+coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil3" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil3" }
+coil-mp = { module = "io.coil-kt.coil3:coil", version.ref = "coil3" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -7,45 +7,44 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
+import com.gk.kmpwallpaperapp.data.remote.MovieApiService
 import com.gk.kmpwallpaperapp.presentation.screens.tabs.PopularMoviesScreen
 import com.gk.kmpwallpaperapp.presentation.screens.tabs.UpcomingMoviesScreen
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.KoinContext
 
 @Composable
 @Preview
-fun App() {
-    MaterialTheme {
-        TabNavigator(PopularMoviesScreen) {
-            Scaffold(
-                bottomBar = {
-                    NavigationBar {
-                        TabNavigationItem(PopularMoviesScreen)
-                        TabNavigationItem(UpcomingMoviesScreen)
+fun App(apiService: MovieApiService) {
+    KoinContext {
+        MaterialTheme {
+            TabNavigator(PopularMoviesScreen) {
+                Scaffold(
+                    bottomBar = {
+                        NavigationBar {
+                            TabNavigationItem(PopularMoviesScreen)
+                            TabNavigationItem(UpcomingMoviesScreen)
+                        }
                     }
+                ) {
+                    CurrentTab()
                 }
-            ) {
-                CurrentTab()
             }
-        }
-        //Navigator(HomeScreen(modifier = Modifier))
 
-//        var showContent by remember { mutableStateOf(false) }
-//        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-//            Button(onClick = { showContent = !showContent }) {
-//                Text("Click me!")
-//            }
-//            AnimatedVisibility(showContent) {
-//                val greeting = remember { Greeting().greet() }
-//                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-//                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-//                    Text("Compose: $greeting")
-//                }
-//            }
-//        }
+            val scope = rememberCoroutineScope()
+            scope.launch {
+                val response = apiService.getMoviesList("popular", 1)
+                println("moviesResponse: $response")
+            }
+            //Navigator(HomeScreen(modifier = Modifier))
+        }
     }
 }
 
