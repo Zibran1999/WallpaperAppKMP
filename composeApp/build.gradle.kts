@@ -10,6 +10,10 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlin.serialization)
+
+    // room
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 kotlin {
@@ -51,6 +55,10 @@ kotlin {
             }
         }
         binaries.executable()
+    }
+
+    sourceSets.commonMain {
+        kotlin.srcDirs("build/generated/ksp/metadata")
     }
     
     sourceSets {
@@ -96,6 +104,19 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.lifecycle.viewmodel)
             implementation(libs.navigation.compose)
+
+            // Room database
+            implementation(libs.room.runtime)
+            implementation(libs.sqlite.bundled)
+
+            // to access resource (png, svg, strings etc)
+            implementation(compose.components.resources)
+
+            // Coil for image loading
+//            implementation(libs.coil.compose.core)
+//            implementation(libs.coil.compose)
+//            implementation(libs.coil.mp)
+//            implementation(libs.coil.network.ktor)
         }
         nativeMain.dependencies {
             // Ktor
@@ -138,10 +159,6 @@ android {
     }
 }
 
-dependencies {
-    debugImplementation(compose.uiTooling)
-}
-
 compose.desktop {
     application {
         mainClass = "com.gk.kmpwallpaperapp.MainKt"
@@ -152,4 +169,13 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
+dependencies {
+    debugImplementation(compose.uiTooling)
+    ksp(libs.room.compiler)
 }

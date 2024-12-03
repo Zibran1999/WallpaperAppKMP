@@ -36,7 +36,12 @@ navigationCompose = "2.8.0-alpha10"
 lifecycleViewModel = "2.8.7"
 
 # Coil to load images
-coil3 = "3.0.0-rc02"
+#coil3 = "3.0.0-rc02"
+
+# room database
+room = "2.7.0-alpha11"
+ksp = "2.0.21-1.0.25"
+sqlite = "2.5.0-SNAPSHOT"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -95,11 +100,18 @@ koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", ver
 # Navigation Compose (used to handle navigation within Jetpack Compose apps)
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 
+
+# room database
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-runtime-android = { module = "androidx.room:room-runtime-android", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+
 # Coil to load images
-coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
-coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil3" }
-coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil3" }
-coil-mp = { module = "io.coil-kt.coil3:coil", version.ref = "coil3" }
+#coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
+#coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil3" }
+#coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil3" }
+#coil-mp = { module = "io.coil-kt.coil3:coil", version.ref = "coil3" }
 
 
 [plugins]
@@ -110,6 +122,9 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 # Kotlin serialization
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+# Room database
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room = { id = "androidx.room", version.ref = "room" }
 
 [bundles]
 ktor = [

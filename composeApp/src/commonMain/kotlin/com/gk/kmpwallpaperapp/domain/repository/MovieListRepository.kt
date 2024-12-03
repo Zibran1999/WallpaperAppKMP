@@ -1,7 +1,5 @@
-package com.gk.composecourse.movies_app_cleanArch.movieList.domain.repository
-
-import com.gk.composecourse.movies_app_cleanArch.movieList.domain.model.Movie
-import com.gk.composecourse.movies_app_cleanArch.movieList.util.Resource
+import com.gk.kmpwallpaperapp.domain.model.Movie
+import com.gk.kmpwallpaperapp.common.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface MovieListRepository {

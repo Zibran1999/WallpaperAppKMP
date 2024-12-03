@@ -16,8 +16,6 @@ fun MainViewController() = ComposeUIViewController(
         }
     }
 ) {
-    val apiService = remember { MovieApiService(createHttpClient(Darwin.create())) }
-    App(
-        apiService = apiService
-    )
+    //val apiService = remember { MovieApiService(createHttpClient(Darwin.create())) }
+    App()
 }

@@ -1,4 +1,4 @@
-package com.gk.composecourse.movies_app_cleanArch.movieList.domain.model
+package com.gk.kmpwallpaperapp.domain.model
 
 data class Movie(
     val adult: Boolean,

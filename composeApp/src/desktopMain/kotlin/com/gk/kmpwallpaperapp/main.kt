@@ -19,10 +19,8 @@ fun main() {
             onCloseRequest = ::exitApplication,
             title = "Wallpaper App",
         ) {
-            val apiService = remember { MovieApiService(createHttpClient(OkHttp.create())) }
-            App(
-                apiService = apiService
-            )
+            //val apiService = remember { MovieApiService(createHttpClient(OkHttp.create())) }
+            App()
         }
     }
 }

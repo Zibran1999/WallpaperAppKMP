@@ -14,10 +14,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val apiService = remember { MovieApiService(createHttpClient(OkHttp.create())) }
-            App(
-                apiService = apiService
-            )
+            //val apiService = remember { MovieApiService(createHttpClient(OkHttp.create())) }
+            App()
         }
     }
 }
