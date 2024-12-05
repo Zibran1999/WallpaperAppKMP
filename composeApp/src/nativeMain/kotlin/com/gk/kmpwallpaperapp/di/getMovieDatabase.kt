@@ -1,4 +1,4 @@
-package com.gk.kmpwallpaperapp.room
+package com.gk.kmpwallpaperapp.di
 
 import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver

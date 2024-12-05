@@ -1,5 +1,8 @@
+package com.gk.kmpwallpaperapp.data.mappers
+
 import com.gk.kmpwallpaperapp.domain.model.Movie
 import com.gk.kmpwallpaperapp.data.local.movie.MovieEntity
+import com.gk.kmpwallpaperapp.data.remote.respond.MovieDto
 
 
 fun MovieDto.toMovieEntity(
@@ -7,21 +10,21 @@ fun MovieDto.toMovieEntity(
 ): MovieEntity {
     return MovieEntity(
         adult = adult ?: false,
-        backdrop_path = backdropPath ?: "",
-        original_language = originalLanguage ?: "",
-        original_title = originalTitle ?: "",
+        backdrop_path = backdrop_path ?: "",
+        original_language = original_language ?: "",
+        original_title = original_title ?: "",
         overview = overview ?: "",
         popularity = popularity ?: 0.0,
-        poster_path = posterPath ?: "",
-        release_date = releaseDate ?: "",
+        poster_path = poster_path ?: "",
+        release_date = release_date ?: "",
         title = title ?: "",
         video = video ?: false,
-        vote_average = voteAverage ?: 0.0,
-        vote_count = voteCount ?: 0,
+        vote_average = vote_average ?: 0.0,
+        vote_count = vote_count ?: 0,
         id = id ?: -1,
         category = category,
         genre_ids = try {
-            genreIds?.joinToString(",") ?: "-1,-2"
+            genre_ids?.joinToString(",") ?: "-1,-2"
         } catch (e: Exception) {
             "-1,-2"
         }

@@ -1,6 +1,6 @@
 package com.gk.kmpwallpaperapp.data.repository
 
-import MovieListRepository
+import com.gk.kmpwallpaperapp.domain.repository.MovieListRepository
 import com.gk.kmpwallpaperapp.domain.model.Movie
 import com.gk.kmpwallpaperapp.common.utils.Resource
 import com.gk.kmpwallpaperapp.data.local.movie.MovieDatabase
@@ -11,8 +11,8 @@ import io.ktor.client.plugins.ServerResponseException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okio.IOException
-import toMovie
-import toMovieEntity
+import com.gk.kmpwallpaperapp.data.mappers.toMovie
+import com.gk.kmpwallpaperapp.data.mappers.toMovieEntity
 
 class MovieListRepositoryImpl(
     private val apiService: MovieApiService,
@@ -76,6 +76,8 @@ class MovieListRepositoryImpl(
             movieEntities.map { it.toMovie(category) }
         ))
         emit(Resource.Loading(false))
+
+        println("Fetched movie list from API: ${movieListFromApi.results}")
 
     }
 

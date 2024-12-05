@@ -1,6 +1,5 @@
 package com.gk.kmpwallpaperapp.presentation.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gk.kmpwallpaperapp.data.remote.respond.MovieListDto
@@ -12,9 +11,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MoviesViewModel(
-    private val repository: MoviesRepository,
-    private val savedStateHandle: SavedStateHandle
-): ViewModel() {
+    private val repository: MoviesRepository
+) : ViewModel() {
     private val _popularMovies = MutableStateFlow<MovieListDto?>(null)
     val popularMovies: StateFlow<MovieListDto?> = _popularMovies
 
@@ -32,6 +30,7 @@ class MoviesViewModel(
                 repository.getPopularMovies(page)
             }
             _popularMovies.value = response
+            println("Popular Movies00: ${_popularMovies.value}")
         }
     }
 
@@ -41,6 +40,7 @@ class MoviesViewModel(
                 repository.getUpcomingMovies(page)
             }
             _upcomingMovies.value = response
+            println("Upcoming Movies00: ${_upcomingMovies.value}")
         }
     }
 }

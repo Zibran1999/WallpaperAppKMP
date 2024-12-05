@@ -8,7 +8,4 @@ actual val platformModule = module {
     single<HttpClientEngine> { Darwin.create() }
 
     single<MovieDatabase> { getMovieDatabase() }
-
-    // Provide MovieDao instance
-    single { get<MovieDatabase>().movieDao }
 }

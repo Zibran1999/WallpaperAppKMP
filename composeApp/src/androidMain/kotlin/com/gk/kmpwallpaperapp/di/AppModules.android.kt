@@ -13,7 +13,7 @@ actual val platformModule = module {
 
     // Provide the PeopleDatabase instance
     single<MovieDatabase> { getMovieDatabase(get()) }
-//
-//    // Provide the PeopleDao instance
-//    single { get<MovieDatabase>().movieDao }
+
+    // Provide the PeopleDao instance
+    // single { get<MovieDatabase>().movieDao }
 }

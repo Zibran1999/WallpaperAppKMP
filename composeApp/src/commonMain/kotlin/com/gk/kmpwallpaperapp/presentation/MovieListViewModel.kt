@@ -1,6 +1,6 @@
 package com.gk.kmpwallpaperapp.presentation
 
-import MovieListRepository
+import com.gk.kmpwallpaperapp.domain.repository.MovieListRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gk.kmpwallpaperapp.common.utils.Category
@@ -42,6 +42,7 @@ class MovieListViewModel (
     }
 
     private fun getPopularMovieList(forceFetchFromRemote: Boolean) {
+
         viewModelScope.launch {
             _movieListState.update {
                 it.copy(isLoading = true)
@@ -51,14 +52,14 @@ class MovieListViewModel (
                 forceFetchFromRemote,
                 Category.POPULAR,
                 movieListState.value.popularMovieListPage
-            ).collectLatest {result ->
+            ).collectLatest { result ->
                 when(result){
                     is Resource.Error -> {
                         _movieListState.update {
                             it.copy(isLoading = false  )
                         }
                     }
-                    is Resource.Success ->{
+                    is Resource.Success -> {
                         result.data?.let { popularList ->
                             _movieListState.update {
                                 it.copy(
@@ -79,6 +80,7 @@ class MovieListViewModel (
     }
 
     private fun getUpcomingMovieList(forceFetchFromRemote: Boolean) {
+
         viewModelScope.launch {
             _movieListState.update {
                 it.copy(isLoading = true)

@@ -112,11 +112,11 @@ kotlin {
             // to access resource (png, svg, strings etc)
             implementation(compose.components.resources)
 
-            // Coil for image loading
-//            implementation(libs.coil.compose.core)
-//            implementation(libs.coil.compose)
-//            implementation(libs.coil.mp)
-//            implementation(libs.coil.network.ktor)
+            // Coil
+            implementation(libs.coil.compose)
+            implementation(libs.coil.compose.core)
+            implementation(libs.coil.network.ktor)
+            implementation(libs.coil.mp)
         }
         nativeMain.dependencies {
             // Ktor
