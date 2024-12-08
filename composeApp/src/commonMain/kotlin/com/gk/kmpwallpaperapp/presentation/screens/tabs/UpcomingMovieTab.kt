@@ -6,6 +6,10 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import cafe.adriel.voyager.transitions.SlideTransition
+import com.gk.kmpwallpaperapp.presentation.screens.UpcomingMoviesScreen
+import org.jetbrains.compose.resources.painterResource
+import wallpaperapp.composeapp.generated.resources.Res
+import wallpaperapp.composeapp.generated.resources.upcoming
 
 object UpcomingMovieTab: Tab {
     @Composable
@@ -17,11 +21,13 @@ object UpcomingMovieTab: Tab {
 
     override val options: TabOptions
         @Composable
-        get() = remember {
-            TabOptions(
+        get() {
+            val icon = painterResource(Res.drawable.upcoming)
+
+           return TabOptions(
                 index = 1u,
                 title = "Upcoming",
-                icon = null
+                icon = icon
             )
         }
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -38,24 +39,6 @@ class HomeScreen : Screen {
 
         TabNavigator(PopularMovieTab) {
             Scaffold(
-                topBar = {
-                    TopAppBar(
-                        title = {
-                            Text(
-                                text = if (movieListState.isCurrentPopularScreen) {
-                                    "Popular Movies"
-                                } else {
-                                    "Upcoming Movies"
-                                },
-                                fontSize = 20.sp
-                            )
-                        },
-                        modifier = Modifier.shadow(2.dp),
-                        colors = topAppBarColors(
-                            MaterialTheme.colorScheme.inverseOnSurface
-                        )
-                    )
-                },
                 bottomBar = {
                     NavigationBar {
                         TabNavigationItem(PopularMovieTab, movieListViewModel::onEvent)
@@ -84,6 +67,13 @@ private fun RowScope.TabNavigationItem(
             onEvent(MovieListUIEvent.Navigate)
         },
         label = { Text(text = tab.options.title) },
-        icon = {}
+        icon = {
+            tab.options.icon?.let { painter ->
+                Icon(
+                    painter = painter,
+                    contentDescription = tab.options.title
+                )
+            }
+        }
     )
 }

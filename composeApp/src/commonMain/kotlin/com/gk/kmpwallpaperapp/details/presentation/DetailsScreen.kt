@@ -1,7 +1,10 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.gk.kmpwallpaperapp.details.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,9 +18,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -39,6 +48,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import com.gk.kmpwallpaperapp.common.Constants.IMAGE_BASE_URL
@@ -58,6 +68,7 @@ class DetailsScreen(
 ) : Screen {
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.current
         val detailsViewModel = koinViewModel<DetailsViewModel>()
         val detailsState by detailsViewModel.detailsState.collectAsState()
         // State to hold the average color
@@ -97,167 +108,190 @@ class DetailsScreen(
             Color.Black
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            defaultColor,
-                            dominantColor
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = detailsState.movie?.title ?: "Movie Details",
+                            maxLines = 1,
+                            fontSize = 20.sp
+                        )
+                    },
+                    navigationIcon = {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .clickable { navigator?.pop() },
+                        )
+                    }
+                )
+            }
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                defaultColor,
+                                dominantColor
+                            )
                         )
                     )
-                )
-                .verticalScroll(rememberScrollState())
-        ) {
-            if (backDropImageState is AsyncImagePainter.State.Error) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp)
-                        .background(MaterialTheme.colorScheme.primaryContainer),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        modifier = Modifier.size(70.dp),
-                        painter = painterResource(Res.drawable.image_not_supported),
-                        contentDescription = detailsState.movie?.title
+                    .verticalScroll(rememberScrollState())
+            ) {
+                if (backDropImageState is AsyncImagePainter.State.Error) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(250.dp)
+                            .background(MaterialTheme.colorScheme.primaryContainer),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(70.dp),
+                            painter = painterResource(Res.drawable.image_not_supported),
+                            contentDescription = detailsState.movie?.title
+                        )
+                    }
+                }
+
+                if (backDropImageState is AsyncImagePainter.State.Success) {
+                    Image(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(290.dp),
+                        painter = backDropImageState.painter,
+                        contentDescription = detailsState.movie?.title,
+                        contentScale = ContentScale.FillWidth
                     )
                 }
-            }
 
-            if (backDropImageState is AsyncImagePainter.State.Success) {
-                Image(
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(290.dp),
-                    painter = backDropImageState.painter,
-                    contentDescription = detailsState.movie?.title,
-                    contentScale = ContentScale.FillWidth
-                )
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .width(160.dp)
-                        .height(240.dp)
+                        .padding(16.dp)
                 ) {
-                    if (posterImageState is AsyncImagePainter.State.Error) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(MaterialTheme.colorScheme.primaryContainer),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                modifier = Modifier.size(70.dp),
-                                painter = painterResource(Res.drawable.image_not_supported),
-                                contentDescription = detailsState.movie?.title
+                    Box(
+                        modifier = Modifier
+                            .width(160.dp)
+                            .height(240.dp)
+                    ) {
+                        if (posterImageState is AsyncImagePainter.State.Error) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(MaterialTheme.colorScheme.primaryContainer),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    modifier = Modifier.size(70.dp),
+                                    painter = painterResource(Res.drawable.image_not_supported),
+                                    contentDescription = detailsState.movie?.title
+                                )
+                            }
+                        }
+
+                        if (posterImageState is AsyncImagePainter.State.Success) {
+                            Image(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(RoundedCornerShape(12.dp)),
+                                painter = posterImageState.painter,
+                                contentDescription = detailsState.movie?.title,
+                                contentScale = ContentScale.Crop
                             )
                         }
+
                     }
 
-                    if (posterImageState is AsyncImagePainter.State.Success) {
-                        Image(
+                    detailsState.movie?.let { movie ->
+                        Column(
                             modifier = Modifier
-                                .fillMaxSize()
-                                .clip(RoundedCornerShape(12.dp)),
-                            painter = posterImageState.painter,
-                            contentDescription = detailsState.movie?.title,
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-
-                }
-
-                detailsState.movie?.let { movie ->
-                    Column(
-                        modifier = Modifier
-                            .padding(start = 16.dp)
-                            .fillMaxWidth()
-                    ) {
-                        Text(
-                            text = movie.title,
-                            fontSize = 19.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = textColor
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Row {
-                            RatingBar(
-                                starsModifier = Modifier.size(18.dp),
-                                rating = movie.vote_average / 2
+                                .padding(start = 16.dp)
+                                .fillMaxWidth()
+                        ) {
+                            Text(
+                                text = movie.title,
+                                fontSize = 19.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = textColor
                             )
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Row {
+                                RatingBar(
+                                    starsModifier = Modifier.size(18.dp),
+                                    rating = movie.vote_average / 2
+                                )
+
+                                Text(
+                                    modifier = Modifier.padding(start = 4.dp),
+                                    text = movie.vote_average.toString().take(3),
+                                    color = textColor.copy(alpha = 0.8f),
+                                    fontSize = 14.sp,
+                                    maxLines = 1
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(12.dp))
 
                             Text(
-                                modifier = Modifier.padding(start = 4.dp),
-                                text = movie.vote_average.toString().take(3),
-                                color = textColor.copy(alpha = 0.8f),
-                                fontSize = 14.sp,
-                                maxLines = 1
+                                text = stringResource(Res.string.language) + movie.original_language,
+                                color = textColor
+                            )
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            Text(
+                                text = buildAnnotatedString {
+                                    withStyle(style = SpanStyle(fontSize = 15.sp)) {
+                                        append(stringResource(Res.string.release_date))
+                                    }
+                                    withStyle(style = SpanStyle(fontSize = 12.sp)) {
+                                        append(movie.release_date)
+                                    }
+                                },
+                                color = textColor
+                            )
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            Text(
+                                text = movie.vote_count.toString() + stringResource(Res.string.votes),
+                                color = textColor
                             )
                         }
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        Text(
-                            text = stringResource(Res.string.language) + movie.original_language,
-                            color = textColor
-                        )
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        Text(
-                            text = buildAnnotatedString {
-                                withStyle(style = SpanStyle(fontSize = 15.sp)) {
-                                    append(stringResource(Res.string.release_date))
-                                }
-                                withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                                    append(movie.release_date)
-                                }
-                            },
-                            color = textColor
-                        )
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        Text(
-                            text = movie.vote_count.toString() + stringResource(Res.string.votes),
-                            color = textColor
-                        )
                     }
                 }
-            }
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(32.dp))
 
-            Text(
-                modifier = Modifier.padding(start = 16.dp),
-                text = stringResource(Res.string.overview),
-                fontSize = 19.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = textColor
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            detailsState.movie?.let {
                 Text(
                     modifier = Modifier.padding(start = 16.dp),
-                    text = it.overview,
-                    fontSize = 16.sp,
+                    text = stringResource(Res.string.overview),
+                    fontSize = 19.sp,
+                    fontWeight = FontWeight.SemiBold,
                     color = textColor
                 )
-            }
 
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(8.dp))
+
+                detailsState.movie?.let {
+                    Text(
+                        modifier = Modifier.padding(start = 16.dp),
+                        text = it.overview,
+                        fontSize = 16.sp,
+                        color = textColor
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(32.dp))
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-package com.gk.kmpwallpaperapp.presentation.screens.tabs
+package com.gk.kmpwallpaperapp.presentation.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,6 +9,14 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Scaffold
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -22,8 +30,7 @@ import com.gk.kmpwallpaperapp.presentation.MovieListViewModel
 import com.gk.kmpwallpaperapp.presentation.component.MovieItem
 import org.koin.compose.viewmodel.koinViewModel
 
-
-class PopularMoviesScreen : Screen {
+class UpcomingMoviesScreen : Screen {
     @Composable
     override fun Content() {
         val viewModel: MovieListViewModel = koinViewModel<MovieListViewModel>()
@@ -31,7 +38,7 @@ class PopularMoviesScreen : Screen {
         val navigator = LocalNavigator.current
         val lazyGridState = rememberLazyGridState()
 
-        if (movieListState.popularMovieList.isEmpty()) {
+        if (movieListState.upcomingMovieList.isEmpty()) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -45,15 +52,15 @@ class PopularMoviesScreen : Screen {
                 state = lazyGridState,
                 contentPadding = PaddingValues(vertical = 8.dp, horizontal = 8.dp)
             ) {
-                items(movieListState.popularMovieList.size) { index ->
+                items(movieListState.upcomingMovieList.size) { index ->
                     MovieItem(
-                        movie = movieListState.popularMovieList[index],
+                        movie = movieListState.upcomingMovieList[index],
                         navigator = navigator
                     )
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    if (index >= movieListState.popularMovieList.size - 1 && !movieListState.isLoading) {
-                        viewModel.onEvent(MovieListUIEvent.Paginate(Category.POPULAR))
+                    if (index >= movieListState.upcomingMovieList.size - 1 && !movieListState.isLoading) {
+                        viewModel.onEvent(MovieListUIEvent.Paginate(Category.UPCOMING))
                     }
                 }
             }
