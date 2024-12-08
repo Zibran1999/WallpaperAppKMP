@@ -6,6 +6,7 @@ import com.gk.kmpwallpaperapp.data.remote.createHttpClient
 import com.gk.kmpwallpaperapp.data.repository.MovieListRepositoryImpl
 import com.gk.kmpwallpaperapp.data.repository.MoviesRepository
 import com.gk.kmpwallpaperapp.data.repository.MoviesRepositoryImpl
+import com.gk.kmpwallpaperapp.details.presentation.DetailsViewModel
 import com.gk.kmpwallpaperapp.domain.repository.MovieListRepository
 import com.gk.kmpwallpaperapp.presentation.MovieListViewModel
 import com.gk.kmpwallpaperapp.presentation.viewmodel.MoviesViewModel
@@ -41,5 +42,5 @@ val sharedModule = module {
     //singleOf(::MoviesRepositoryImpl) bind MoviesRepository::class
     viewModelOf(::MoviesViewModel)
     viewModelOf(::MovieListViewModel)
-
+    viewModelOf(::DetailsViewModel)
 }

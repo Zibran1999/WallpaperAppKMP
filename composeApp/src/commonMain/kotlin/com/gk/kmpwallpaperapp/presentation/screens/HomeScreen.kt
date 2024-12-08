@@ -26,8 +26,8 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.gk.kmpwallpaperapp.presentation.MovieListUIEvent
 import com.gk.kmpwallpaperapp.presentation.MovieListViewModel
-import com.gk.kmpwallpaperapp.presentation.screens.tabs.PopularMoviesScreen
-import com.gk.kmpwallpaperapp.presentation.screens.tabs.UpcomingMoviesScreen
+import com.gk.kmpwallpaperapp.presentation.screens.tabs.PopularMovieTab
+import com.gk.kmpwallpaperapp.presentation.screens.tabs.UpcomingMovieTab
 import org.koin.compose.viewmodel.koinViewModel
 
 class HomeScreen : Screen {
@@ -36,7 +36,7 @@ class HomeScreen : Screen {
         val movieListViewModel: MovieListViewModel = koinViewModel<MovieListViewModel>()
         val movieListState = movieListViewModel.movieListState.collectAsState().value
 
-        TabNavigator(PopularMoviesScreen) {
+        TabNavigator(PopularMovieTab) {
             Scaffold(
                 topBar = {
                     TopAppBar(
@@ -58,8 +58,8 @@ class HomeScreen : Screen {
                 },
                 bottomBar = {
                     NavigationBar {
-                        TabNavigationItem(PopularMoviesScreen, movieListViewModel::onEvent)
-                        TabNavigationItem(UpcomingMoviesScreen, movieListViewModel::onEvent)
+                        TabNavigationItem(PopularMovieTab, movieListViewModel::onEvent)
+                        TabNavigationItem(UpcomingMovieTab, movieListViewModel::onEvent)
                     }
                 }
             ) { paddingValues ->

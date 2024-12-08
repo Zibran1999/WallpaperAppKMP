@@ -35,6 +35,7 @@ import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import com.gk.kmpwallpaperapp.common.Constants.IMAGE_BASE_URL
 import com.gk.kmpwallpaperapp.common.utils.RatingBar
+import com.gk.kmpwallpaperapp.details.presentation.DetailsScreen
 import com.gk.kmpwallpaperapp.domain.model.Movie
 
 @Composable
@@ -69,7 +70,7 @@ fun MovieItem(
                 )
             )
             .clickable {
-                // navigator?.push(DetailsScreen(movie.id))
+                 navigator?.push(DetailsScreen(movie.id))
             }
     ) {
         when (painterState) {
