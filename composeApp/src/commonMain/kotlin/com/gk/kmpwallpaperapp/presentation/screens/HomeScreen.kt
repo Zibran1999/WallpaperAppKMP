@@ -9,7 +9,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults.containerColor
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -18,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
@@ -40,7 +43,9 @@ class HomeScreen : Screen {
         TabNavigator(PopularMovieTab) {
             Scaffold(
                 bottomBar = {
-                    NavigationBar {
+                    NavigationBar(
+                        containerColor = Color.DarkGray
+                    ) {
                         TabNavigationItem(PopularMovieTab, movieListViewModel::onEvent)
                         TabNavigationItem(UpcomingMovieTab, movieListViewModel::onEvent)
                     }
@@ -61,6 +66,15 @@ private fun RowScope.TabNavigationItem(
 ) {
     val tabNavigator = LocalTabNavigator.current
     NavigationBarItem(
+        colors = NavigationBarItemColors(
+            selectedIconColor = Color.White,
+            selectedIndicatorColor = Color(0x80FFFFFF),
+            unselectedIconColor = Color.LightGray,
+            unselectedTextColor = Color.LightGray,
+            selectedTextColor = Color.White,
+            disabledIconColor = Color.Gray,
+            disabledTextColor = Color.Gray
+        ),
         selected = tabNavigator.current == tab,
         onClick = {
             tabNavigator.current = tab

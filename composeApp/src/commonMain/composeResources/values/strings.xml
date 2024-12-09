@@ -4,8 +4,8 @@
     <string name="app_name">Wallpaper App</string>
     <string name="popular">Popular</string>
     <string name="upcoming">Upcoming</string>
-    <string name="language">"Language: "</string>
-    <string name="release_date">"Release Date: "</string>
-    <string name="votes">" Votes"</string>
-    <string name="overview">"Overview: "</string>
+    <string name="language">Language: </string>
+    <string name="release_date">Release Date: </string>
+    <string name="votes">Votes: </string>
+    <string name="overview">Overview: </string>
 </resources>

@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -35,30 +36,34 @@ class PopularMoviesScreen : Screen {
         val movieListState = viewModel.movieListState.collectAsState().value
         val navigator = LocalNavigator.current
         val lazyGridState = rememberLazyGridState()
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            backgroundColor = Color(0xFF898989)
+        ) {
+            if (movieListState.popularMovieList.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.fillMaxSize(),
+                    state = lazyGridState,
+                    contentPadding = PaddingValues(vertical = 8.dp, horizontal = 8.dp)
+                ) {
+                    items(movieListState.popularMovieList.size) { index ->
+                        MovieItem(
+                            movie = movieListState.popularMovieList[index],
+                            navigator = navigator
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
 
-        if (movieListState.popularMovieList.isEmpty()) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier.fillMaxSize(),
-                state = lazyGridState,
-                contentPadding = PaddingValues(vertical = 8.dp, horizontal = 8.dp)
-            ) {
-                items(movieListState.popularMovieList.size) { index ->
-                    MovieItem(
-                        movie = movieListState.popularMovieList[index],
-                        navigator = navigator
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    if (index >= movieListState.popularMovieList.size - 1 && !movieListState.isLoading) {
-                        viewModel.onEvent(MovieListUIEvent.Paginate(Category.POPULAR))
+                        if (index >= movieListState.popularMovieList.size - 1 && !movieListState.isLoading) {
+                            viewModel.onEvent(MovieListUIEvent.Paginate(Category.POPULAR))
+                        }
                     }
                 }
             }

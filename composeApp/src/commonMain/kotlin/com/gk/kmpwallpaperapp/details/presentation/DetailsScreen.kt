@@ -53,6 +53,7 @@ import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import com.gk.kmpwallpaperapp.common.Constants.IMAGE_BASE_URL
 import com.gk.kmpwallpaperapp.common.utils.RatingBar
+import com.gk.kmpwallpaperapp.common.utils.languageMap
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -66,6 +67,7 @@ import wallpaperapp.composeapp.generated.resources.votes
 class DetailsScreen(
     private val movieId: Int? = null
 ) : Screen {
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.current
@@ -98,6 +100,9 @@ class DetailsScreen(
 //            )
         }
 
+        val lightTextColor = Color(0xFFE0E0E0)
+        val semiTransparentLightTextColor = lightTextColor.copy(alpha = 0.8f)
+
         fun isColorDark(color: Color): Boolean {
             return color.luminance() < 0.4
         }
@@ -115,7 +120,8 @@ class DetailsScreen(
                         Text(
                             text = detailsState.movie?.title ?: "Movie Details",
                             maxLines = 1,
-                            fontSize = 20.sp
+                            fontSize = 20.sp,
+                            color = Color.White
                         )
                     },
                     navigationIcon = {
@@ -125,8 +131,12 @@ class DetailsScreen(
                             modifier = Modifier
                                 .padding(8.dp)
                                 .clickable { navigator?.pop() },
+                            tint = Color.White
                         )
-                    }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color.DarkGray
+                    )
                 )
             }
         ) {
@@ -136,8 +146,8 @@ class DetailsScreen(
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                defaultColor,
-                                dominantColor
+                                Color(0xFFB0B0B0),
+                                Color(0xFF606060)
                             )
                         )
                     )
@@ -219,7 +229,7 @@ class DetailsScreen(
                                 text = movie.title,
                                 fontSize = 19.sp,
                                 fontWeight = FontWeight.SemiBold,
-                                color = textColor
+                                color = lightTextColor
                             )
 
                             Spacer(modifier = Modifier.height(16.dp))
@@ -233,50 +243,63 @@ class DetailsScreen(
                                 Text(
                                     modifier = Modifier.padding(start = 4.dp),
                                     text = movie.vote_average.toString().take(3),
-                                    color = textColor.copy(alpha = 0.8f),
+                                    color = semiTransparentLightTextColor,
                                     fontSize = 14.sp,
                                     maxLines = 1
                                 )
                             }
 
                             Spacer(modifier = Modifier.height(12.dp))
-
+                            val languageName = languageMap[movie.original_language] ?: movie.original_language
                             Text(
-                                text = stringResource(Res.string.language) + movie.original_language,
-                                color = textColor
+                                text = buildAnnotatedString {
+                                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                        append(stringResource(Res.string.language))
+                                    }
+                                    append(languageName)
+                                },
+                                color = lightTextColor
                             )
 
                             Spacer(modifier = Modifier.height(10.dp))
 
                             Text(
                                 text = buildAnnotatedString {
-                                    withStyle(style = SpanStyle(fontSize = 15.sp)) {
+                                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                                         append(stringResource(Res.string.release_date))
                                     }
-                                    withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                                        append(movie.release_date)
-                                    }
+                                    append(movie.release_date)
                                 },
-                                color = textColor
+                                color = lightTextColor
                             )
 
                             Spacer(modifier = Modifier.height(10.dp))
 
                             Text(
-                                text = movie.vote_count.toString() + stringResource(Res.string.votes),
-                                color = textColor
+                                text = buildAnnotatedString {
+                                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                        append(stringResource(Res.string.votes))
+                                    }
+                                    append(movie.vote_count.toString())
+                                },
+                                color = semiTransparentLightTextColor
                             )
                         }
                     }
                 }
                 Spacer(modifier = Modifier.height(32.dp))
 
+
                 Text(
                     modifier = Modifier.padding(start = 16.dp),
-                    text = stringResource(Res.string.overview),
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(stringResource(Res.string.overview))
+                        }
+                    },
                     fontSize = 19.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = textColor
+                    color = lightTextColor
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -286,7 +309,7 @@ class DetailsScreen(
                         modifier = Modifier.padding(start = 16.dp),
                         text = it.overview,
                         fontSize = 16.sp,
-                        color = textColor
+                        color = lightTextColor
                     )
                 }
 

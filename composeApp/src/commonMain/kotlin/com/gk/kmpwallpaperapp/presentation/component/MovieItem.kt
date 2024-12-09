@@ -18,14 +18,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
@@ -34,6 +29,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import com.gk.kmpwallpaperapp.common.Constants.IMAGE_BASE_URL
+import com.gk.kmpwallpaperapp.common.utils.GradientCircularProgressIndicator
 import com.gk.kmpwallpaperapp.common.utils.RatingBar
 import com.gk.kmpwallpaperapp.details.presentation.DetailsScreen
 import com.gk.kmpwallpaperapp.domain.model.Movie
@@ -45,8 +41,6 @@ fun MovieItem(
 ) {
     val painter = rememberAsyncImagePainter("${IMAGE_BASE_URL}${movie.poster_path}")
     val painterState = painter.state.collectAsState().value
-    val defaultColor = MaterialTheme.colorScheme.secondaryContainer
-    var dominantColor by remember { mutableStateOf(defaultColor) }
 
     Column(
         modifier = Modifier
@@ -61,26 +55,25 @@ fun MovieItem(
                     bottomEnd = 10.dp
                 )
             )
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(
-                        MaterialTheme.colorScheme.secondaryContainer,
-                        dominantColor
-                    )
-                )
-            )
+            .background(Color.DarkGray)
             .clickable {
-                 navigator?.push(DetailsScreen(movie.id))
+                navigator?.push(DetailsScreen(movie.id))
             }
     ) {
         when (painterState) {
             is AsyncImagePainter.State.Loading -> {
                 Box(
-                    Modifier
+                    modifier = Modifier
                         .fillMaxWidth()
-                        .height(250.dp)
-                        .background(MaterialTheme.colorScheme.primary)
-                )
+                        .height(250.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    GradientCircularProgressIndicator(
+                        progress = 0.7f, // Example progress
+                        modifier = Modifier.size(64.dp), // Size of the indicator
+                        strokeWidth = 8f // Adjust thickness
+                    )
+                }
             }
 
             is AsyncImagePainter.State.Error -> {
@@ -95,7 +88,8 @@ fun MovieItem(
                 }
             }
 
-            else -> {
+            is AsyncImagePainter.State.Success -> {
+
                 Image(
                     painter = painter,
                     contentDescription = movie.title,
@@ -105,6 +99,11 @@ fun MovieItem(
                         .clip(RoundedCornerShape(22.dp)),
                     contentScale = ContentScale.Crop
                 )
+
+            }
+
+            AsyncImagePainter.State.Empty -> {
+                Text(text = "Unknown error occurred!")
             }
         }
 
