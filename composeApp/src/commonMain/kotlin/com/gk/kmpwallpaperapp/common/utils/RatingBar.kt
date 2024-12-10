@@ -2,15 +2,13 @@ package com.gk.kmpwallpaperapp.common.utils
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.StarHalf
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material.icons.rounded.StarOutline
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import org.jetbrains.compose.resources.painterResource
-import wallpaperapp.composeapp.generated.resources.Res
-import wallpaperapp.composeapp.generated.resources.star
-import wallpaperapp.composeapp.generated.resources.star_half
 
 @Composable
 fun RatingBar(
@@ -37,7 +35,7 @@ fun RatingBar(
         if (halfStar) {
             Icon(
                 modifier = starsModifier,
-                painter = painterResource(Res.drawable.star_half),
+                imageVector = Icons.AutoMirrored.Rounded.StarHalf,
                 contentDescription = "halfStar",
                 tint = starsColor
             )
@@ -45,7 +43,7 @@ fun RatingBar(
         repeat(unfilledStars) {
             Icon(
                 modifier = starsModifier,
-                painter = painterResource(Res.drawable.star),
+                imageVector = Icons.Rounded.StarOutline,
                 contentDescription = "unfilledStar",
                 tint = starsColor
             )

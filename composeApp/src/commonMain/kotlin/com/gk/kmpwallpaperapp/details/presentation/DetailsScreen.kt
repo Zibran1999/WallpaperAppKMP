@@ -50,7 +50,10 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import coil3.compose.AsyncImagePainter
+import coil3.compose.LocalPlatformContext
 import coil3.compose.rememberAsyncImagePainter
+import coil3.request.ImageRequest
+import coil3.size.Size
 import com.gk.kmpwallpaperapp.common.Constants.IMAGE_BASE_URL
 import com.gk.kmpwallpaperapp.common.utils.RatingBar
 import com.gk.kmpwallpaperapp.common.utils.languageMap
@@ -85,20 +88,21 @@ class DetailsScreen(
             }
         }
 
-        val backDropImage =
-            rememberAsyncImagePainter("${IMAGE_BASE_URL}${detailsState.movie?.backdrop_path}")
+//        val backDropImage =
+//            rememberAsyncImagePainter("${IMAGE_BASE_URL}${detailsState.movie?.backdrop_path}")
         val posterImage =
             rememberAsyncImagePainter("${IMAGE_BASE_URL}${detailsState.movie?.poster_path}")
+
+        val backDropImage = rememberAsyncImagePainter(
+            model = ImageRequest.Builder(LocalPlatformContext.current)
+                .data(IMAGE_BASE_URL + detailsState.movie?.backdrop_path)
+                .size(Size.ORIGINAL)
+                .build()
+        )
 
         val backDropImageState = backDropImage.state.collectAsState().value
         val posterImageState = posterImage.state.collectAsState().value
 
-
-        if (backDropImageState is AsyncImagePainter.State.Success) {
-//            dominantColor = getAverageColor(
-//                imageBitmap = backDropImageState.result.drawable.toBitmap().asImageBitmap()
-//            )
-        }
 
         val lightTextColor = Color(0xFFE0E0E0)
         val semiTransparentLightTextColor = lightTextColor.copy(alpha = 0.8f)
@@ -173,10 +177,10 @@ class DetailsScreen(
                     Image(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(290.dp),
+                            .height(300.dp),
                         painter = backDropImageState.painter,
                         contentDescription = detailsState.movie?.title,
-                        contentScale = ContentScale.FillWidth
+                        contentScale = ContentScale.Fit
                     )
                 }
 
