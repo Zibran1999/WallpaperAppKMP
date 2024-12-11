@@ -37,6 +37,8 @@ import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import com.gk.kmpwallpaperapp.common.Constants.IMAGE_BASE_URL
 import com.gk.kmpwallpaperapp.common.utils.GradientCircularProgressIndicator
+import com.gk.kmpwallpaperapp.common.utils.ImageErrorState
+import com.gk.kmpwallpaperapp.common.utils.ImageLoadingState
 import com.gk.kmpwallpaperapp.common.utils.RatingBar
 import com.gk.kmpwallpaperapp.details.presentation.DetailsScreen
 import com.gk.kmpwallpaperapp.domain.model.Movie
@@ -69,62 +71,19 @@ fun MovieItem(
     ) {
         when (painterState) {
             is AsyncImagePainter.State.Loading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    GradientCircularProgressIndicator(
-                        progress = 0.7f, // Example progress
-                        modifier = Modifier.size(64.dp), // Size of the indicator
-                        strokeWidth = 8f // Adjust thickness
-                    )
-                }
+               ImageLoadingState()
             }
 
             is AsyncImagePainter.State.Error -> {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp)
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Warning,
-                        contentDescription = "Error Icon",
-                        tint = MaterialTheme.colorScheme.onError,
-                        modifier = Modifier.size(50.dp)
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "Unable to load the image.",
-                        color = MaterialTheme.colorScheme.onError,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            textAlign = TextAlign.Center
-                        )
-
-                    )
-                    Text(
-                        text = buildAnnotatedString {
-                            append("Check your internet connection and try again.\n")
-                            append("Or something went wrong!")
-                        },
-                        color = MaterialTheme.colorScheme.onError,
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            textAlign = TextAlign.Center
-                        ),
-                        fontSize = 10.sp,
-                        modifier = Modifier
-                            .padding(top = 8.dp)
-                    )
-                }
+                ImageErrorState()
             }
 
-            is AsyncImagePainter.State.Success -> {
+            /*
+             https://github.com/issues/assigned
+             https://github.com/pulls/assigned
+             */
 
+            is AsyncImagePainter.State.Success -> {
                 Image(
                     painter = painter,
                     contentDescription = movie.title,

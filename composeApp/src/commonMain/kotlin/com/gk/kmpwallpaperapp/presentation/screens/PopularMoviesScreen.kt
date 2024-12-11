@@ -3,6 +3,7 @@
 package com.gk.kmpwallpaperapp.presentation.screens
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,10 +21,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalViewConfiguration
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.gk.kmpwallpaperapp.common.utils.Category
+import com.gk.kmpwallpaperapp.common.utils.calculateColumnCount
 import com.gk.kmpwallpaperapp.presentation.MovieListUIEvent
 import com.gk.kmpwallpaperapp.presentation.MovieListViewModel
 import com.gk.kmpwallpaperapp.presentation.component.MovieItem
@@ -48,21 +53,26 @@ class PopularMoviesScreen : Screen {
                     CircularProgressIndicator()
                 }
             } else {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.fillMaxSize(),
-                    state = lazyGridState,
-                    contentPadding = PaddingValues(vertical = 8.dp, horizontal = 8.dp)
-                ) {
-                    items(movieListState.popularMovieList.size) { index ->
-                        MovieItem(
-                            movie = movieListState.popularMovieList[index],
-                            navigator = navigator
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
+                BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+                    val screenWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
+                    val columnCount = calculateColumnCount(screenWidth)
 
-                        if (index >= movieListState.popularMovieList.size - 1 && !movieListState.isLoading) {
-                            viewModel.onEvent(MovieListUIEvent.Paginate(Category.POPULAR))
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(columnCount),
+                        modifier = Modifier.fillMaxSize(),
+                        state = lazyGridState,
+                        contentPadding = PaddingValues(vertical = 8.dp, horizontal = 8.dp)
+                    ) {
+                        items(movieListState.popularMovieList.size) { index ->
+                            MovieItem(
+                                movie = movieListState.popularMovieList[index],
+                                navigator = navigator
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            if (index >= movieListState.popularMovieList.size - 1 && !movieListState.isLoading) {
+                                viewModel.onEvent(MovieListUIEvent.Paginate(Category.POPULAR))
+                            }
                         }
                     }
                 }
