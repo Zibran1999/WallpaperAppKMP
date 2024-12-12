@@ -1,4 +1,4 @@
-rootProject.name = "WallpaperApp"
+rootProject.name = "MoviesApp"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

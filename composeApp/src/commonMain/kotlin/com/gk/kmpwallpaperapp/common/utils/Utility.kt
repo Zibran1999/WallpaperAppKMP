@@ -1,5 +1,6 @@
 package com.gk.kmpwallpaperapp.common.utils
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
@@ -16,6 +19,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -37,17 +42,31 @@ fun calculateColumnCount(screenWidth: Dp): Int {
         screenWidth >= 1200.dp -> 7  // Standard desktops
         screenWidth >= 1000.dp -> 6  // Smaller desktops or large tablets
         screenWidth >= 800.dp -> 4   // Medium-sized screens
+        screenWidth in 500.dp..799.dp -> 3 // Small tablets or large phones
         else -> 2                    // Small screens or mobile
     }
 }
 
 @Composable
-fun ImageErrorState() {
+fun ImageErrorState(
+    isDesktop: Boolean = false,
+    posterWidth: Dp = 0.dp,
+    posterHeight: Dp = 0.dp
+) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(250.dp)
-            .padding(16.dp),
+        modifier = if (isDesktop) {
+            Modifier
+                .width(posterWidth)
+                .height(posterHeight)
+                .clip(RoundedCornerShape(10.dp))
+                .background(Color.DarkGray)
+        } else {
+            Modifier
+                .fillMaxWidth()
+                .height(250.dp)
+                .clip(RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp))
+                .background(Color.DarkGray)
+        },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -69,7 +88,7 @@ fun ImageErrorState() {
         Text(
             text = buildAnnotatedString {
                 append("Check your internet connection and try again.\n")
-                append("Or something went wrong!")
+                append("Or Image is not available!")
             },
             color = MaterialTheme.colorScheme.onError,
             style = MaterialTheme.typography.bodySmall.copy(
@@ -77,7 +96,7 @@ fun ImageErrorState() {
             ),
             fontSize = 10.sp,
             modifier = Modifier
-                .padding(top = 8.dp)
+                .padding(10.dp)
         )
     }
 }

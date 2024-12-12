@@ -39,10 +39,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,17 +54,17 @@ import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import com.gk.kmpwallpaperapp.common.Constants.IMAGE_BASE_URL
 import com.gk.kmpwallpaperapp.common.utils.ImageErrorState
+import com.gk.kmpwallpaperapp.common.utils.ImageLoadingState
 import com.gk.kmpwallpaperapp.common.utils.RatingBar
 import com.gk.kmpwallpaperapp.common.utils.languageMap
-import org.jetbrains.compose.resources.painterResource
+import com.gk.kmpwallpaperapp.getPlatform
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import wallpaperapp.composeapp.generated.resources.Res
-import wallpaperapp.composeapp.generated.resources.image_not_supported
-import wallpaperapp.composeapp.generated.resources.language
-import wallpaperapp.composeapp.generated.resources.overview
-import wallpaperapp.composeapp.generated.resources.release_date
-import wallpaperapp.composeapp.generated.resources.votes
+import moviesapp.composeapp.generated.resources.Res
+import moviesapp.composeapp.generated.resources.language
+import moviesapp.composeapp.generated.resources.overview
+import moviesapp.composeapp.generated.resources.release_date
+import moviesapp.composeapp.generated.resources.votes
 
 class DetailsScreen(
     private val movieId: Int? = null
@@ -70,6 +72,7 @@ class DetailsScreen(
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
+        val currentPlatform = getPlatform().name
         val navigator = LocalNavigator.current
         val detailsViewModel = koinViewModel<DetailsViewModel>()
         val detailsState by detailsViewModel.detailsState.collectAsState()
@@ -85,13 +88,6 @@ class DetailsScreen(
         val posterImage =
             rememberAsyncImagePainter("${IMAGE_BASE_URL}${detailsState.movie?.poster_path}")
 
-//        val backDropImage = rememberAsyncImagePainter(
-//            model = ImageRequest.Builder(LocalPlatformContext.current)
-//                .data(IMAGE_BASE_URL + detailsState.movie?.backdrop_path)
-//                .size(Size.ORIGINAL)
-//                .build()
-//        )
-
         val backDropImageState = backDropImage.state.collectAsState().value
         val posterImageState = posterImage.state.collectAsState().value
 
@@ -105,9 +101,10 @@ class DetailsScreen(
                     title = {
                         Text(
                             text = detailsState.movie?.title ?: "Movie Details",
-                            maxLines = 1,
                             fontSize = 20.sp,
-                            color = Color.White
+                            maxLines = 1,
+                            color = Color.White,
+                            overflow = TextOverflow.Ellipsis
                         )
                     },
                     navigationIcon = {
@@ -133,8 +130,8 @@ class DetailsScreen(
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                Color(0xFFB0B0B0),
-                                Color(0xFF606060)
+                                Color(0xFF303030),
+                                Color(0xFF101010)
                             )
                         )
                     )
@@ -162,7 +159,6 @@ class DetailsScreen(
                                 .width(posterWidth)
                                 .height(posterHeight)
                                 .clip(RoundedCornerShape(8.dp))
-                                .background(MaterialTheme.colorScheme.primaryContainer)
                         ) {
                             if (posterImageState is AsyncImagePainter.State.Success) {
                                 Image(
@@ -171,10 +167,13 @@ class DetailsScreen(
                                     modifier = Modifier.fillMaxSize(),
                                     contentScale = ContentScale.Crop
                                 )
+                            } else if (posterImageState is AsyncImagePainter.State.Loading) {
+                                ImageLoadingState()
                             } else {
-                                ImageErrorState()
+                                ImageErrorState(isDesktop,posterWidth, posterHeight)
                             }
                         }
+
                         Column(
                             modifier = Modifier
                                 .fillMaxHeight()
@@ -183,51 +182,15 @@ class DetailsScreen(
                                 .verticalScroll(rememberScrollState()),
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            if (backDropImageState is AsyncImagePainter.State.Error) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(250.dp)
-                                        .background(MaterialTheme.colorScheme.primaryContainer),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Icon(
-                                        modifier = Modifier.size(70.dp),
-                                        painter = painterResource(Res.drawable.image_not_supported),
-                                        contentDescription = detailsState.movie?.title
-                                    )
-                                }
-                            }
-
-                            if (backDropImageState is AsyncImagePainter.State.Success) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .fillMaxHeight(1.0f)
-                                        .clip(RoundedCornerShape(8.dp))
-                                ) {
-                                    Image(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(350.dp)
-                                            .clip(RoundedCornerShape(8.dp)),
-                                        painter = backDropImageState.painter,
-                                        contentDescription = detailsState.movie?.title,
-                                        contentScale = ContentScale.Fit
-                                    )
-                                }
-                            }
-
                             detailsState.movie?.let { movie ->
                                 Text(
                                     text = movie.title,
                                     fontSize = 34.sp,
                                     fontWeight = FontWeight.Bold,
+                                    maxLines = 2,
+                                    lineHeight = 34.sp,
                                     color = lightTextColor
                                 )
-                                Spacer(modifier = Modifier.height(16.dp))
-
-
 
                                 Row {
                                     RatingBar(
@@ -304,26 +267,27 @@ class DetailsScreen(
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState())
                     ) {
+                        if (backDropImageState is AsyncImagePainter.State.Loading) {
+                            ImageLoadingState()
+                        }
                         if (backDropImageState is AsyncImagePainter.State.Error) {
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(250.dp)
-                                    .background(MaterialTheme.colorScheme.primaryContainer),
+                                    .graphicsLayer(translationY = -80f)
+                                    .height(300.dp),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Icon(
-                                    modifier = Modifier.size(70.dp),
-                                    painter = painterResource(Res.drawable.image_not_supported),
-                                    contentDescription = detailsState.movie?.title
-                                )
+                                ImageErrorState(isDesktop, posterWidth, posterHeight)
                             }
                         }
+
 
                         if (backDropImageState is AsyncImagePainter.State.Success) {
                             Image(
                                 modifier = Modifier
                                     .fillMaxWidth()
+                                    .graphicsLayer(translationY = -80f)
                                     .height(300.dp),
                                 painter = backDropImageState.painter,
                                 contentDescription = detailsState.movie?.title,
@@ -334,7 +298,7 @@ class DetailsScreen(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp)
+                                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
                         ) {
                             Box(
                                 modifier = Modifier
@@ -345,15 +309,10 @@ class DetailsScreen(
                                     Box(
                                         modifier = Modifier
                                             .fillMaxSize()
-                                            .clip(RoundedCornerShape(12.dp))
-                                            .background(MaterialTheme.colorScheme.primaryContainer),
+                                            .clip(RoundedCornerShape(12.dp)),
                                         contentAlignment = Alignment.Center
                                     ) {
-                                        Icon(
-                                            modifier = Modifier.size(70.dp),
-                                            painter = painterResource(Res.drawable.image_not_supported),
-                                            contentDescription = detailsState.movie?.title
-                                        )
+                                        ImageErrorState(isDesktop, posterWidth, posterHeight)
                                     }
                                 }
 
@@ -380,7 +339,9 @@ class DetailsScreen(
                                         text = movie.title,
                                         fontSize = 19.sp,
                                         fontWeight = FontWeight.SemiBold,
-                                        color = lightTextColor
+                                        color = lightTextColor,
+                                        maxLines = 2,
+                                        lineHeight = 24.sp
                                     )
 
                                     Spacer(modifier = Modifier.height(16.dp))
