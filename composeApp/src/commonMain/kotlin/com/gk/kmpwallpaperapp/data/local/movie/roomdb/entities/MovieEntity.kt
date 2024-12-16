@@ -1,13 +1,16 @@
-package com.gk.kmpwallpaperapp.domain.model
+package com.gk.kmpwallpaperapp.data.local.movie.roomdb.entities
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.serialization.SerialName
 
-data class Movie(
+@Entity
+data class MovieEntity(
     val adult: Boolean,
     @SerialName("backdrop_path")
     val backdropPath: String,
     @SerialName("genre_ids")
-    val genreIds: List<Int>,
+    val genreIds: String,
     @SerialName("original_language")
     val originalLanguage: String,
     @SerialName("original_title")
@@ -24,6 +27,7 @@ data class Movie(
     val voteAverage: Double,
     @SerialName("vote_count")
     val voteCount: Int,
+    @PrimaryKey
     val id: Int,
     val category: String
 )

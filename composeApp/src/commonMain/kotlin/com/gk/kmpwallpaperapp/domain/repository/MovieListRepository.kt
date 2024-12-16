@@ -1,7 +1,7 @@
 package com.gk.kmpwallpaperapp.domain.repository
 
 import com.gk.kmpwallpaperapp.domain.model.Movie
-import com.gk.kmpwallpaperapp.common.utils.Resource
+import com.gk.kmpwallpaperapp.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface MovieListRepository {

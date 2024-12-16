@@ -1,5 +1,5 @@
 package com.gk.kmpwallpaperapp.di
-import com.gk.kmpwallpaperapp.data.local.movie.MovieDatabase
+import com.gk.kmpwallpaperapp.data.local.movie.roomdb.MovieDatabase
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.darwin.Darwin
 import org.koin.dsl.module

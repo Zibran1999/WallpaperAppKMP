@@ -26,11 +26,10 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.Navigator
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
-import com.gk.kmpwallpaperapp.common.Constants.IMAGE_BASE_URL
-import com.gk.kmpwallpaperapp.common.utils.ImageErrorState
-import com.gk.kmpwallpaperapp.common.utils.ImageLoadingState
-import com.gk.kmpwallpaperapp.common.utils.RatingBar
-import com.gk.kmpwallpaperapp.details.presentation.DetailsScreen
+import com.gk.kmpwallpaperapp.utils.constants.Constants.IMAGE_BASE_URL
+import com.gk.kmpwallpaperapp.utils.ImageErrorState
+import com.gk.kmpwallpaperapp.utils.ImageLoadingState
+import com.gk.kmpwallpaperapp.presentation.screens.details.DetailsScreen
 import com.gk.kmpwallpaperapp.domain.model.Movie
 
 @Composable
@@ -38,7 +37,7 @@ fun MovieItem(
     movie: Movie,
     navigator: Navigator?
 ) {
-    val painter = rememberAsyncImagePainter("${IMAGE_BASE_URL}${movie.poster_path}")
+    val painter = rememberAsyncImagePainter("${IMAGE_BASE_URL}${movie.posterPath}")
     val painterState = painter.state.collectAsState().value
 
     Column(
@@ -108,12 +107,12 @@ fun MovieItem(
         ) {
             RatingBar(
                 starsModifier = Modifier.size(18.dp),
-                rating = movie.vote_average / 2
+                rating = movie.voteAverage / 2
             )
 
             Text(
                 modifier = Modifier.padding(start = 4.dp),
-                text = movie.vote_average.toString().take(3),
+                text = movie.voteAverage.toString().take(3),
                 color = Color.LightGray,
                 fontSize = 14.sp,
                 maxLines = 1

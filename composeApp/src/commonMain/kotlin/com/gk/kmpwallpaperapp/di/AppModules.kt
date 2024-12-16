@@ -1,18 +1,14 @@
 package com.gk.kmpwallpaperapp.di
 
-import com.gk.kmpwallpaperapp.data.local.movie.MovieDatabase
-import com.gk.kmpwallpaperapp.data.remote.MovieApiService
+import com.gk.kmpwallpaperapp.data.local.movie.roomdb.MovieDatabase
+import com.gk.kmpwallpaperapp.data.remote.apis.MovieApiService
 import com.gk.kmpwallpaperapp.data.remote.createHttpClient
-import com.gk.kmpwallpaperapp.data.repository.MovieListRepositoryImpl
-import com.gk.kmpwallpaperapp.data.repository.MoviesRepository
-import com.gk.kmpwallpaperapp.data.repository.MoviesRepositoryImpl
-import com.gk.kmpwallpaperapp.details.presentation.DetailsViewModel
+import com.gk.kmpwallpaperapp.data.remote.repository.MovieListRepositoryImpl
 import com.gk.kmpwallpaperapp.domain.repository.MovieListRepository
-import com.gk.kmpwallpaperapp.presentation.MovieListViewModel
-import com.gk.kmpwallpaperapp.presentation.viewmodel.MoviesViewModel
+import com.gk.kmpwallpaperapp.presentation.screens.details.DetailsViewModel
+import com.gk.kmpwallpaperapp.presentation.screens.home.viewmodel.MovieListViewModel
 import io.ktor.client.engine.HttpClientEngine
 import org.koin.core.module.Module
-import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -28,10 +24,6 @@ val sharedModule = module {
     }
 
     single {
-        MoviesRepositoryImpl(get())
-    }.bind<MoviesRepository>()
-
-    single {
         MovieListRepositoryImpl(
            apiService =  get(),
             movieDatabase = get<MovieDatabase>()
@@ -40,7 +32,6 @@ val sharedModule = module {
 
     // short way
     //singleOf(::MoviesRepositoryImpl) bind MoviesRepository::class
-    viewModelOf(::MoviesViewModel)
     viewModelOf(::MovieListViewModel)
     viewModelOf(::DetailsViewModel)
 }
