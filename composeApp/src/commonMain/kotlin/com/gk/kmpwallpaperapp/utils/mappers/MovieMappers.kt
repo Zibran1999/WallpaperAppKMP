@@ -1,8 +1,8 @@
 package com.gk.kmpwallpaperapp.utils.mappers
 
-import com.gk.kmpwallpaperapp.domain.model.Movie
 import com.gk.kmpwallpaperapp.data.local.movie.roomdb.entities.MovieEntity
 import com.gk.kmpwallpaperapp.data.remote.model.response.MovieDto
+import com.gk.kmpwallpaperapp.domain.model.Movie
 
 
 fun MovieDto.toMovieEntity(
@@ -10,21 +10,21 @@ fun MovieDto.toMovieEntity(
 ): MovieEntity {
     return MovieEntity(
         adult = adult ?: false,
-        backdrop_path = backdrop_path ?: "",
-        original_language = original_language ?: "",
-        original_title = original_title ?: "",
+        backdropPath = backdropPath ?: "",
+        originalLanguage = originalLanguage ?: "",
+        originalTitle = originalTitle ?: "",
         overview = overview ?: "",
         popularity = popularity ?: 0.0,
-        poster_path = poster_path ?: "",
-        release_date = release_date ?: "",
+        posterPath = posterPath ?: "",
+        releaseDate = releaseDate ?: "",
         title = title ?: "",
         video = video ?: false,
-        vote_average = vote_average ?: 0.0,
-        vote_count = vote_count ?: 0,
+        voteAverage = voteAverage ?: 0.0,
+        voteCount = voteCount ?: 0,
         id = id ?: -1,
         category = category,
-        genre_ids = try {
-            genre_ids?.joinToString(",") ?: "-1,-2"
+        genreIds = try {
+            genreIds?.joinToString(",") ?: "-1,-2"
         } catch (e: Exception) {
             "-1,-2"
         }
@@ -36,21 +36,21 @@ fun MovieEntity.toMovie(
 ): Movie {
     return Movie(
         adult = adult,
-        backdrop_path = backdrop_path,
-        original_language = original_language,
-        original_title = original_title,
+        backdropPath = backdropPath,
+        originalLanguage = originalLanguage,
+        originalTitle = originalTitle,
         overview = overview,
         popularity = popularity,
-        poster_path = poster_path,
-        release_date = release_date,
+        posterPath = posterPath,
+        releaseDate = releaseDate,
         title = title,
         video = video,
-        vote_average = vote_average,
-        vote_count = vote_count,
+        voteAverage = voteAverage,
+        voteCount = voteCount,
         id = id,
         category = category,
-        genre_ids = try {
-                    genre_ids.split(",").map { it.toInt() }
+        genreIds = try {
+            genreIds.split(",").map { it.toInt() }
         } catch (e: Exception){
             listOf(-1, -2)
         }

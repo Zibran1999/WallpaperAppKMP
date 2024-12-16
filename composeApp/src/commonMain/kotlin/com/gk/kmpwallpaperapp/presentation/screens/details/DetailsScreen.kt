@@ -51,19 +51,19 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
-import com.gk.kmpwallpaperapp.utils.constants.Constants.IMAGE_BASE_URL
+import com.gk.kmpwallpaperapp.getPlatform
+import com.gk.kmpwallpaperapp.presentation.component.RatingBar
 import com.gk.kmpwallpaperapp.utils.ImageErrorState
 import com.gk.kmpwallpaperapp.utils.ImageLoadingState
-import com.gk.kmpwallpaperapp.presentation.component.RatingBar
+import com.gk.kmpwallpaperapp.utils.constants.Constants.IMAGE_BASE_URL
 import com.gk.kmpwallpaperapp.utils.languageMap
-import com.gk.kmpwallpaperapp.getPlatform
-import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import moviesapp.composeapp.generated.resources.Res
 import moviesapp.composeapp.generated.resources.language
 import moviesapp.composeapp.generated.resources.overview
 import moviesapp.composeapp.generated.resources.release_date
 import moviesapp.composeapp.generated.resources.votes
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 class DetailsScreen(
     private val movieId: Int? = null
@@ -83,9 +83,9 @@ class DetailsScreen(
         }
 
         val backDropImage =
-            rememberAsyncImagePainter("${IMAGE_BASE_URL}${detailsState.movie?.backdrop_path}")
+            rememberAsyncImagePainter("${IMAGE_BASE_URL}${detailsState.movie?.backdropPath}")
         val posterImage =
-            rememberAsyncImagePainter("${IMAGE_BASE_URL}${detailsState.movie?.poster_path}")
+            rememberAsyncImagePainter("${IMAGE_BASE_URL}${detailsState.movie?.posterPath}")
 
         val backDropImageState = backDropImage.state.collectAsState().value
         val posterImageState = posterImage.state.collectAsState().value
@@ -194,20 +194,20 @@ class DetailsScreen(
                                 Row {
                                     RatingBar(
                                         starsModifier = Modifier.size(30.dp),
-                                        rating = movie.vote_average / 2
+                                        rating = movie.voteAverage / 2
                                     )
 
                                     Text(
                                         modifier = Modifier.padding(start = 4.dp),
-                                        text = "${movie.vote_average.toString().take(3)}/10",
+                                        text = "${movie.voteAverage.toString().take(3)}/10",
                                         color = semiTransparentLightTextColor,
                                         fontSize = 20.sp,
                                         maxLines = 1
                                     )
                                 }
                                 val languageName =
-                                    languageMap[movie.original_language]
-                                        ?: movie.original_language
+                                    languageMap[movie.originalLanguage]
+                                        ?: movie.originalLanguage
                                 Text(
                                     text = buildAnnotatedString {
                                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
@@ -223,7 +223,7 @@ class DetailsScreen(
                                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                                             append(stringResource(Res.string.release_date))
                                         }
-                                        append(movie.release_date)
+                                        append(movie.releaseDate)
                                     },
                                     color = lightTextColor
                                 )
@@ -233,7 +233,7 @@ class DetailsScreen(
                                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                                             append(stringResource(Res.string.votes))
                                         }
-                                        append(movie.vote_count.toString())
+                                        append(movie.voteCount.toString())
                                     },
                                     color = lightTextColor
                                 )
@@ -348,12 +348,12 @@ class DetailsScreen(
                                     Row {
                                         RatingBar(
                                             starsModifier = Modifier.size(18.dp),
-                                            rating = movie.vote_average / 2
+                                            rating = movie.voteAverage / 2
                                         )
 
                                         Text(
                                             modifier = Modifier.padding(start = 4.dp),
-                                            text = movie.vote_average.toString().take(3),
+                                            text = movie.voteAverage.toString().take(3),
                                             color = semiTransparentLightTextColor,
                                             fontSize = 14.sp,
                                             maxLines = 1
@@ -362,8 +362,8 @@ class DetailsScreen(
 
                                     Spacer(modifier = Modifier.height(12.dp))
                                     val languageName =
-                                        languageMap[movie.original_language]
-                                            ?: movie.original_language
+                                        languageMap[movie.originalLanguage]
+                                            ?: movie.originalLanguage
                                     Text(
                                         text = buildAnnotatedString {
                                             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
@@ -381,7 +381,7 @@ class DetailsScreen(
                                             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                                                 append(stringResource(Res.string.release_date))
                                             }
-                                            append(movie.release_date)
+                                            append(movie.releaseDate)
                                         },
                                         color = lightTextColor
                                     )
@@ -393,7 +393,7 @@ class DetailsScreen(
                                             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                                                 append(stringResource(Res.string.votes))
                                             }
-                                            append(movie.vote_count.toString())
+                                            append(movie.voteCount.toString())
                                         },
                                         color = semiTransparentLightTextColor
                                     )
