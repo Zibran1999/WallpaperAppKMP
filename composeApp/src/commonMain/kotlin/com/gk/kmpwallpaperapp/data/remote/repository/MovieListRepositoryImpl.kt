@@ -78,9 +78,6 @@ class MovieListRepositoryImpl(
             movieEntities.map { it.toMovie(category) }
         ))
         emit(Resource.Loading(false))
-
-        println("Fetched movie list from API: ${movieListFromApi.results}")
-
     }
 
     override suspend fun getMovie(id: Int): Flow<Resource<Movie>> = flow {
