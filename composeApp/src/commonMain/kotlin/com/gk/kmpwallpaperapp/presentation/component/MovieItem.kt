@@ -26,11 +26,10 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.Navigator
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
-import com.gk.kmpwallpaperapp.common.Constants.IMAGE_BASE_URL
-import com.gk.kmpwallpaperapp.common.utils.ImageErrorState
-import com.gk.kmpwallpaperapp.common.utils.ImageLoadingState
-import com.gk.kmpwallpaperapp.common.utils.RatingBar
-import com.gk.kmpwallpaperapp.details.presentation.DetailsScreen
+import com.gk.kmpwallpaperapp.utils.constants.Constants.IMAGE_BASE_URL
+import com.gk.kmpwallpaperapp.utils.ImageErrorState
+import com.gk.kmpwallpaperapp.utils.ImageLoadingState
+import com.gk.kmpwallpaperapp.presentation.screens.details.DetailsScreen
 import com.gk.kmpwallpaperapp.domain.model.Movie
 
 @Composable

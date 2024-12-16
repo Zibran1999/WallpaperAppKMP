@@ -2,7 +2,7 @@ package com.gk.kmpwallpaperapp.room
 
 import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.gk.kmpwallpaperapp.data.local.movie.MovieDatabase
+import com.gk.kmpwallpaperapp.data.local.movie.roomdb.MovieDatabase
 import java.io.File
 
 fun getMovieDatabase(): MovieDatabase {

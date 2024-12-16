@@ -2,7 +2,7 @@ package com.gk.kmpwallpaperapp.di
 
 import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.gk.kmpwallpaperapp.data.local.movie.MovieDatabase
+import com.gk.kmpwallpaperapp.data.local.movie.roomdb.MovieDatabase
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO

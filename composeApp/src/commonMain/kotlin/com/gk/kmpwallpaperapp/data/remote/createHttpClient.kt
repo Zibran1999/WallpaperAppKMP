@@ -1,6 +1,6 @@
 package com.gk.kmpwallpaperapp.data.remote
 
-import com.gk.kmpwallpaperapp.common.Constants.API_KEY
+import com.gk.kmpwallpaperapp.utils.constants.Constants.API_KEY
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
